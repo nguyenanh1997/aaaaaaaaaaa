@@ -104,28 +104,28 @@ public class userDAO {
         return false;
     }
     
-    public static boolean update(user std) {
+    public static int update(user std) {
         Connection connection = null;
         PreparedStatement statement = null;
-        boolean check = false;
+        int check = 0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             //lay tat ca danh sach sinh vien
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "update user set id = ?, username = ?, password = ?, email = ?, role_name = ?, class_name = ?  where username = ?";
+            String sql = "update user set  username = ?, password = ?, email = ?, role_name = ?, class_name = ?  where username = ?";
             statement = connection.prepareCall(sql);
             
-            statement.setInt(1, std.getId());
-            statement.setString(2, std.getUsername());
-            statement.setString(3, std.getPassword());
-            statement.setString(4, std.getEmail());
-            statement.setString(5, std.getRole_name());
-            statement.setString(6, std.getClass_name());
-            statement.setString(7, std.getUsername());
+
+            statement.setString(1, std.getUsername());
+            statement.setString(2, std.getPassword());
+            statement.setString(3, std.getEmail());
+            statement.setString(4, std.getRole_name());
+            statement.setString(5, std.getClass_name());
+            statement.setString(6, std.getUsername());
             
-            check = statement.execute();
+            check = statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(userDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -203,9 +203,9 @@ public class userDAO {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "select * from user where username = ?";
+            String sql = "select * from user where username like ?";
             statement = connection.prepareCall(sql);
-            statement.setString(1, username);
+            statement.setString(1, "%"+username+"%");
             
             ResultSet resultSet = statement.executeQuery();
             
@@ -246,7 +246,7 @@ public class userDAO {
         return ClassList;
     }
     
-    public static List<user> findByUserId(int id) {
+    public static List<user> findProfile(String username) {
         List<user> ClassList = new ArrayList<>();
         
         Connection connection = null;
@@ -258,9 +258,9 @@ public class userDAO {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "select * from user where id = ?";
+            String sql = "select * from user where username = ?";
             statement = connection.prepareCall(sql);
-            statement.setInt(1, id);
+            statement.setString(1, username);
             
             ResultSet resultSet = statement.executeQuery();
             
@@ -272,7 +272,7 @@ public class userDAO {
                         resultSet.getString("role_name"),resultSet.getString("class_name")
                 );
                 ClassList.add(std);
-
+ 
             }
         } catch (SQLException ex) {
             Logger.getLogger(userDAO.class.getName()).log(Level.SEVERE, null, ex);

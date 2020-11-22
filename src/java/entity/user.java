@@ -29,12 +29,6 @@ public class user implements  Serializable {
     }
     
     
-    public user(String username, String password , String email, String role_name, String class_name) {
-        this.username = username;
-        this.password = password;
-        this.role_name = role_name;
-        this.class_name = class_name;
-    }
     
     public user(int id, String username, String password , String email, String role_name) {
         this.id = id;
@@ -44,6 +38,14 @@ public class user implements  Serializable {
         this.role_name = role_name;
 
     }
+    
+    public user(String username, String password , String email, String role_name, String class_name) {
+        this.username = username;
+        this.password = password;
+        this.role_name = role_name;
+        this.class_name = class_name;
+    }
+    
     
     public user(int id, String username, String password , String email, String role_name, String class_name) {
         this.id = id;

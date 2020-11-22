@@ -9,19 +9,18 @@ package entity;
  *
  * @author NA
  */
-public class classs {
+public class Class {
     int class_id;
     String class_name;
 
-    public classs() {
-    }
-
-    public classs( String class_name) {
-
-        this.class_name = class_name;
+    public Class() {
     }
     
-    public classs(int class_id, String class_name) {
+    public Class(String class_name) {
+        
+        this.class_name = class_name;
+    }
+    public Class(int class_id, String class_name) {
         this.class_id = class_id;
         this.class_name = class_name;
     }

@@ -1,3 +1,3 @@
 <%@include file="header.jsp" %>   
-     this is content   
+     ${username}
 <%@include file="footer.jsp" %>

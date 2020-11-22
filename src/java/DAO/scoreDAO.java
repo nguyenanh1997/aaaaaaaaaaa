@@ -31,7 +31,7 @@ public class scoreDAO {
             ResultSet resultSet = statement.executeQuery(sql);
             
             while (resultSet.next()) {                
-                score std = new score(resultSet.getInt("student_id"), resultSet.getInt("class_id"), resultSet.getInt("score"));
+                score std = new score(resultSet.getString("username"), resultSet.getString("class_name"), resultSet.getInt("score"));
                 ClassList.add(std);
             }
         } catch (SQLException ex) {
@@ -68,11 +68,11 @@ public class scoreDAO {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "insert into score(student_id, class_id, score) values(?,?,?)";
+            String sql = "insert into score(username, class_name, score) values(?,?,?)";
             statement = connection.prepareCall(sql);
             
-            statement.setInt(1, std.getStudent_id());
-            statement.setInt(2, std.getClass_id());
+            statement.setString(1, std.getUsername());
+            statement.setString(2, std.getClass_name());
             statement.setInt(3, std.getScore());
             
             statement.execute();
@@ -108,13 +108,13 @@ public class scoreDAO {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "update class set student_id = ?, class_id = ?, score = ?  where student_id = ?";
+            String sql = "update class set score = ?  where username = ?, class_name = ?";
             statement = connection.prepareCall(sql);
             
-            statement.setInt(1, std.getStudent_id());
-            statement.setInt(2, std.getClass_id());
-            statement.setInt(3, std.getScore());
-            statement.setInt(4, std.getStudent_id());
+
+            statement.setInt(1, std.getScore());
+            statement.setString(2, std.getUsername());
+            statement.setString(3, std.getClass_name());
             
             statement.execute();
         } catch (SQLException ex) {
@@ -141,7 +141,7 @@ public class scoreDAO {
         //ket thuc.
     }
     
-    public static void delete(int student_id, int class_id) {
+    public static void delete(String student_id, String class_id) {
         Connection connection = null;
         PreparedStatement statement = null;
         
@@ -151,11 +151,11 @@ public class scoreDAO {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "delete from score where student_id = ? or class_id = ?";
+            String sql = "delete from score where username = ? and class_name = ?";
             statement = connection.prepareCall(sql);
             
-            statement.setInt(1, student_id);
-            statement.setInt(1, class_id);
+            statement.setString(1, student_id);
+            statement.setString(1, class_id);
             
             statement.execute();
         } catch (SQLException ex) {
@@ -182,7 +182,7 @@ public class scoreDAO {
         //ket thuc.
     }
     
-    public static List<score> findByClassId(int class_id) {
+    public static List<score> findByClassId(String class_id) {
         List<score> ClassList = new ArrayList<>();
         
         Connection connection = null;
@@ -194,7 +194,7 @@ public class scoreDAO {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "select * from score where class_id = ?";
+            String sql = "select * from score where class_name = ?";
             statement = connection.prepareCall(sql);
             statement.setString(1, "%"+class_id+"%");
             
@@ -202,8 +202,8 @@ public class scoreDAO {
             
             while (resultSet.next()) {                
                 score std = new score(
-                        resultSet.getInt("student_id"),
-                        resultSet.getInt("class_id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("class_name"),
                         resultSet.getInt("score")
                 );
                 ClassList.add(std);
@@ -234,7 +234,7 @@ public class scoreDAO {
         return ClassList;
     }
     
-    public static List<score> findByClassIdStudentId(int class_id, int student_id) {
+    public static List<score> findByClassIdStudentId(String class_name, String username) {
         List<score> ClassList = new ArrayList<>();
         
         Connection connection = null;
@@ -246,17 +246,17 @@ public class scoreDAO {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "select * from score where class_id = ? and student_id = ?";
+            String sql = "select * from score where class_name = ? and username = ?";
             statement = connection.prepareCall(sql);
-            statement.setInt(1, class_id);
-            statement.setInt(2, student_id);
+            statement.setString(1, class_name);
+            statement.setString(2, username);
             
             ResultSet resultSet = statement.executeQuery();
             
             while (resultSet.next()) {                
                 score std = new score(
-                        resultSet.getInt("student_id"),
-                        resultSet.getInt("class_id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("class_name"),
                         resultSet.getInt("score")
                 );
                 ClassList.add(std);

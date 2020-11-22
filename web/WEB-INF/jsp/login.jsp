@@ -19,6 +19,6 @@
             <input type="password" name="password" placeholder="password"/>
             <input type="submit" value="submit">
         </form>
-        
+        <h3>${message}</h3>
     </body>
 </html>

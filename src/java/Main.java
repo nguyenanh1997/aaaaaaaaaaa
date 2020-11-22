@@ -13,7 +13,7 @@ import entity.*;
  */
 public class Main {
     public static void main(String args[]) throws ClassNotFoundException{
-        System.out.println(userDAO.findByUsername("a"));
+        List<user> users = userDAO.findProfile("a");
 
     }
 }

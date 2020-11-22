@@ -30,8 +30,57 @@ public class adminController {
         model.put("listrole", listrole);
         model.put("users", users);
 
-        return "studentManager";
+        return "userManager";
     }
+    
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public String searchUser(ModelMap model, @RequestParam("username") String username) throws ClassNotFoundException{
+        List<user> users = userDAO.findByUsername(username);
+        List<role> listrole = roleDAO.findAll();
+        model.put("listrole", listrole);
+        model.put("users", users);
+        return "userManager";
+    }
+    
+    @RequestMapping(value = "/userManager", method = RequestMethod.GET)
+    public String getUserManager(ModelMap model) throws ClassNotFoundException{
+        List<user> users = userDAO.findAll();
+        List<role> listrole = roleDAO.findAll();
+        model.put("listrole", listrole);
+        model.put("users", users);
+
+        return "userManager";
+    }
+    
+    @RequestMapping(value = "/userManager", method = RequestMethod.POST)
+    public void editUser(ModelMap model,@RequestParam("id") int id, @RequestParam("username") String username,@RequestParam("password") String password, 
+            @RequestParam("email") String email, @RequestParam("role_name") String role_name, 
+            @RequestParam("submit") String submit ) throws ClassNotFoundException{
+            if(submit.compareTo("edit") == 0){
+                user newUser = new user(id, username, password, email, role_name);
+                int check = userDAO.update(newUser);
+                if (check == 1){
+                    model.put("message", "update thanh cong");
+                }
+                else{
+                    model.put("message", "update khong thanh cong, de nghi xem lai thong tin update");
+                }
+            }else{
+                if (submit.compareTo("delete") == 0){
+                    boolean check = userDAO.delete(username);
+                    if (check){
+                    model.put("message", "xoa thanh cong");
+                    }
+                    else{
+                        model.put("message", "xoa khong thanh cong, co loi khi xoa user");
+                    }
+                }
+            }
+        
+           getUserManager(model);
+    }
+
+    
     
     @RequestMapping(value = "/addUser", method = RequestMethod.GET)
     public String getPage(ModelMap model) throws ClassNotFoundException{
@@ -43,10 +92,10 @@ public class adminController {
         return "addStudent";
     }
     
-    @RequestMapping(value = "/addStudent", method = RequestMethod.POST)
-    public void postStudent(ModelMap model, @RequestParam("username") String username, @RequestParam("password") String password,
-            @RequestParam("email") String email, @RequestParam("role_name") String role_name, 
-            @RequestParam("class_name") String class_name) throws ClassNotFoundException{
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public String postUser(ModelMap model, @RequestParam("username") String username, @RequestParam("password") String password,
+            @RequestParam( value = "email", required=false ) String email, @RequestParam(value="role_name", required=false) String role_name, 
+            @RequestParam(value = "class_name", required=false) String class_name) throws ClassNotFoundException{
         if (username.isEmpty() || password.isEmpty())
         {
             model.put("message", "de nghi nhap username va password");
@@ -60,7 +109,12 @@ public class adminController {
         else{
             model.put("message", "username khong hop le");
         }
-        getPage(model);
+        List<classs> listclass = classsDAO.findAll();
+        List<role> listrole = roleDAO.findAll();
+        model.put("listclass", listclass);
+        model.put("listrole", listrole);
+        
+        return "addStudent";
         
     }
     
@@ -70,9 +124,9 @@ public class adminController {
             @RequestParam("email") String email, @RequestParam("role_name") String role_name, 
             @RequestParam("class_name") String class_name, @RequestParam("submit") String submit ) throws ClassNotFoundException{
             if(submit.compareTo("edit") == 0){
-                user newUser = new user(id, username, password, email, role_name, class_name);
-                boolean check = userDAO.update(newUser);
-                if (check){
+                user newUser = new user(username, password, email, role_name, class_name);
+                int check = userDAO.update(newUser);
+                if (check == 1){
                     model.put("message", "update thanh cong");
                 }
                 else{
@@ -101,7 +155,7 @@ public class adminController {
         model.put("listrole", listrole);
         model.put("users", users);
 
-        return "teacherManager";
+        return "userManager";
     }
       
     
@@ -111,8 +165,8 @@ public class adminController {
             @RequestParam("class_name") String class_name, @RequestParam("submit") String submit ) throws ClassNotFoundException{
             if(submit.compareTo("edit") == 0){
                 user newUser = new user(id, username, password, email, role_name, class_name);
-                boolean check = userDAO.update(newUser);
-                if (check){
+                int check = userDAO.update(newUser);
+                if (check == 1){
                     model.put("message", "update thanh cong");
                 }
                 else{
@@ -141,7 +195,7 @@ public class adminController {
         model.put("listrole", listrole);
         model.put("users", users);
 
-        return "teacherManager";
+        return "userManager";
     }
       
     
@@ -151,8 +205,8 @@ public class adminController {
             @RequestParam("submit") String submit ) throws ClassNotFoundException{
             if(submit.compareTo("edit") == 0){
                 user newUser = new user(id, username, password, email, role_name);
-                boolean check = userDAO.update(newUser);
-                if (check){
+                int check = userDAO.update(newUser);
+                if (check == 1){
                     model.put("message", "update thanh cong");
                 }
                 else{
@@ -173,5 +227,6 @@ public class adminController {
            getAdminManager(model);
     }
 
-
+    
+    
 }

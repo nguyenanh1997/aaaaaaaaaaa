@@ -58,10 +58,10 @@ public class classsDAO {
         return ClassList;
     }
     
-    public static void insert(classs std) throws ClassNotFoundException {
+    public static int insert(classs std) throws ClassNotFoundException {
         Connection connection = null;
         PreparedStatement statement = null;
-        
+        int check = 0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             //lay tat ca danh sach sinh vien
@@ -73,7 +73,7 @@ public class classsDAO {
             
             statement.setString(1, std.getClass_name());
             
-            statement.execute();
+            check = statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(classsDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -94,24 +94,25 @@ public class classsDAO {
             }
         }
         //ket thuc.
+        return check;
     }
     
-    public static void update(classs std) {
+    public static int update(classs std) {
         Connection connection = null;
         PreparedStatement statement = null;
-        
+        int check = 0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             //lay tat ca danh sach sinh vien
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "update class set class_name=? where class_name = ?";
+            String sql = "update class set class_name = ? where class_id = ?";
             statement = connection.prepareCall(sql);
             
             statement.setString(1, std.getClass_name());
-            
-            statement.execute();
+            statement.setInt(2, std.getClass_id());
+            check = statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(classsDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -134,24 +135,25 @@ public class classsDAO {
             }
         }
         //ket thuc.
+        return check;
     }
     
-    public static void delete(String name) {
+    public static int delete(String name) {
         Connection connection = null;
         PreparedStatement statement = null;
-        
+        int check = 0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             //lay tat ca danh sach sinh vien
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
             
             //query
-            String sql = "delete from class where name = ?";
+            String sql = "delete from class where class_name = ?";
             statement = connection.prepareCall(sql);
             
             statement.setString(1, name);
             
-            statement.execute();
+            check =statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(classsDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -174,6 +176,7 @@ public class classsDAO {
             }
         }
         //ket thuc.
+        return check;
     }
     
     public static List<classs> findByFullname(String name) {

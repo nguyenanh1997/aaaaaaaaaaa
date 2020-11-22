@@ -10,31 +10,32 @@ package entity;
  * @author NA
  */
 public class score {
-    int student_id, class_id, score;
+    String username, class_name;
+    int score;
 
     public score() {
     }
 
-    public score(int student_id, int class_id, int score) {
-        this.student_id = student_id;
-        this.class_id = class_id;
+    public score(String username, String class_name, int score) {
+        this.username = username;
+        this.class_name = class_name;
         this.score = score;
     }
 
-    public int getStudent_id() {
-        return student_id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setStudent_id(int student_id) {
-        this.student_id = student_id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public int getClass_id() {
-        return class_id;
+    public String getClass_name() {
+        return class_name;
     }
 
-    public void setClass_id(int class_id) {
-        this.class_id = class_id;
+    public void setClass_name(String class_name) {
+        this.class_name = class_name;
     }
 
     public int getScore() {
@@ -44,6 +45,7 @@ public class score {
     public void setScore(int score) {
         this.score = score;
     }
+
     
     
 }

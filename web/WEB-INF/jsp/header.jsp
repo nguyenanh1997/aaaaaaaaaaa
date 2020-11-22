@@ -41,17 +41,28 @@ th, td {
                 %>
                 Welcome Admin
                 <tr>        <th><a href="login.htm" >home</a></th>
+                            <th><a href="userManager.htm">User managment</a></th>
                             <th><a href="studentManager.htm">Student managment</a></th>
                             <th><a href="teacherManager.htm">Teacher managment</a></th>    
                             <th><a href="adminManager.htm" >admin managment</a></th>
+                            <th>
+                                <form action="search.htm" method="POST"> 
+                                    Search<input type="text" name="username" placeholder="Nhap username"/>
+                                            <button> Submit</button>
+                                </form>
+                           </th>
+                           <th><a href="logout.htm" >logout</a></th>
                 </tr>
                 <%          }
                             if (value.compareTo("teacher") == 0){
                 %>
                             Welcome Teacher
                             <tr>
-                                <th><a href="#">Class information</a></th>
-                                <th><a href="#">User profile</a></th>
+                                <th><a href="login.htm" >home</a></th>
+                                <th><a href="addClass.htm">Add class</a></th>
+                                <th><a href="classList.htm">Class list</a></th>
+                                <th><a href="classinfo.htm">Class info</a></th>
+                                <th><a href="logout.htm" >logout</a></th>
                             </tr>
                             
                             <%          }
@@ -59,8 +70,10 @@ th, td {
                                 %>
                             Welcome Student
                             <tr>
-                                <th><a href="#">User profile</a></th>
-                                <th><a href="#">Check score</a></th>
+                                <th><a href="login.htm" >home</a></th>
+                                <th><a href="profile.htm">User profile</a></th>
+                                <th><a href="score.htm">Check score</a></th>
+                                <th><a href="logout.htm" >logout</a></th>
                             </tr>
                         <%          }
                         }

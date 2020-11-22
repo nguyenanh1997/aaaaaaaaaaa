@@ -2,15 +2,15 @@ package Controller;
 import entity.*;
 import DAO.*;
 import java.util.HashMap;
-import java.util.HashSet;
+
 import java.util.Map;
-import java.util.Set;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public class controller {
     @RequestMapping(value="/login", method=RequestMethod.GET)
-    public String xinchao(@CookieValue("username") String username, @CookieValue("role_name") String role_name)
+    public String xinchao(@CookieValue(value = "username", defaultValue = "hello") String username, @CookieValue(value = "role_name", defaultValue = "hello") String role_name)
     {
-        if(username != null && role_name != null)
+        if(username.compareTo("hello") != 0  && role_name.compareTo("hello") != 0)
         {
             return "dashbroad";
         }
@@ -49,6 +49,7 @@ public class controller {
         String role_id = userDAO.login(username, password);
         
         if (role_id != null){
+
             map.put("spring", "mvc");
             model.addAttribute("username", username);
             Cookie role_cookie = new Cookie("role_name", role_id);
@@ -58,10 +59,22 @@ public class controller {
         }else
         {
             map.put("spring", "mvc");
-            model.addAttribute("username", "tai khoan hoac mat khau khong dung!");
+            model.addAttribute("message", "tai khoan hoac mat khau khong dung!");
+            return "login";
         }
         
         model.mergeAttributes(map);
         return "dashbroad";
+    }
+    
+    @RequestMapping(value="/logout", method=RequestMethod.GET)
+    public String logout(HttpServletResponse response){
+        Cookie username = new Cookie("username", "");
+        Cookie role_name = new Cookie("role_name", "");
+        username.setMaxAge(0);
+        role_name.setMaxAge(0);
+        response.addCookie(username);
+        response.addCookie(role_name);
+        return "redirect:" + "login.htm";
     }
 }
